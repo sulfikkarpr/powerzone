@@ -24,6 +24,7 @@
     },
     "extra": {
       "API_BASE_URL": "http://localhost:8000/api",
+      "PRIMARY_COLOR": "#1e90ff",
       "eas": {
         "projectId": "00000000-0000-0000-0000-000000000000"
       }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import { Appbar, List, FAB } from 'react-native-paper';
+import { Appbar, List, FAB, Menu } from 'react-native-paper';
 import { api } from '@/services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Member {
   id: number;
@@ -14,10 +15,18 @@ interface Member {
 
 export default function MembersScreen({ navigation }: any) {
   const [members, setMembers] = useState<Member[]>([]);
+  const [menuVisible, setMenuVisible] = useState<number | null>(null);
 
   const load = async () => {
-    const res = await api.get<Member[]>('/users', { params: { status: 'active' } });
-    setMembers(res.data.filter(m => m.role === 'member'));
+    try {
+      const res = await api.get<Member[]>('/users', { params: { status: 'active' } });
+      const data = res.data.filter(m => m.role === 'member');
+      setMembers(data);
+      await AsyncStorage.setItem('cache:members', JSON.stringify(data));
+    } catch (e) {
+      const cached = await AsyncStorage.getItem('cache:members');
+      if (cached) setMembers(JSON.parse(cached));
+    }
   };
 
   useEffect(() => {
@@ -39,6 +48,17 @@ export default function MembersScreen({ navigation }: any) {
             title={item.name}
             description={`${item.phone} • ${item.email}`}
             onPress={() => navigation.navigate('MemberDetail', { member: item })}
+            right={() => (
+              <Menu
+                visible={menuVisible === item.id}
+                onDismiss={() => setMenuVisible(null)}
+                anchor={<List.Icon icon="dots-vertical" onPress={() => setMenuVisible(item.id)} />}
+              >
+                <Menu.Item onPress={() => { setMenuVisible(null); navigation.navigate('Plans', { member: item }); }} title="Plans" />
+                <Menu.Item onPress={() => { setMenuVisible(null); navigation.navigate('Progress', { member: item }); }} title="Progress" />
+                <Menu.Item onPress={() => { setMenuVisible(null); navigation.navigate('Payments', { member: item }); }} title="Payments" />
+              </Menu>
+            )}
           />
         )}
       />
