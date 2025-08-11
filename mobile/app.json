@@ -23,9 +23,11 @@
       "package": "com.powerzone.admin"
     },
     "extra": {
+      "API_BASE_URL": "http://localhost:8000/api",
       "eas": {
         "projectId": "00000000-0000-0000-0000-000000000000"
       }
-    }
+    },
+    "plugins": []
   }
 }

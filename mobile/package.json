@@ -26,7 +26,8 @@
     "@react-native-async-storage/async-storage": "^1.23.1",
     "axios": "^1.7.2",
     "victory-native": "^36.9.2",
-    "react-native-svg": "^15.2.0"
+    "react-native-svg": "^15.2.0",
+    "react-native-gesture-handler": "~2.16.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -34,6 +35,7 @@
     "@types/react-native": "0.73.0",
     "typescript": "5.4.5",
     "eslint": "^9.6.0",
-    "@types/react-redux": "^7.1.33"
+    "@types/react-redux": "^7.1.33",
+    "babel-plugin-module-resolver": "^5.0.2"
   }
 }
